@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <script defer src="../static/script/main.js"></script>
+    <title>Ordens de Serviço</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand bg-light fw-bold">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home">Sistema O.S.</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/home">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/produto/cadastro">Produto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/prestador/cadastro">Prestador</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/processo/cadastro">Processo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/tamanho/cadastro">Tamanho</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/logout">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+
+    <div class="bg-body rounded-3" style="margin:100px">
+        <div class="container-fluid px-5">
+            <h1>Cadastrar Ordem de Serviço</h1>
+            <form action="" id="formCadastroOrdemServico">
+                <div class="input-group mb-3">
+                    <label for="idOrdem" class="form-label" style="margin-right: 5px">ID</label>
+                    <input type="number" class="form-control" id="idOrdem" readonly="readonly" style="background: #EEE">
+                    <label for="situacao" class="form-label" style="margin-right: 5px; margin-left: 200px">Situação O.S.</label>
+                    <input type="text" class="form-control" id="situacao" readonly="readonly" style="background: #EEE">
+                </div>
+
+                <div class="mb-1">
+                    <label for="processoId" class="form-label">Processo</label>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="processoId" placeholder="Adicione o processo a ser feito"
+                           aria-label="Recipient's username" aria-describedby="button-addon2" readonly="readonly" >
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2" data-bs-toggle="modal" data-bs-target="#processoModal">Selecionar</button>
+                    <input type="text" class="form-control" id="processo" style="margin-left: 100px; background: #EEE" readonly="readonly">
+                </div>
+                <div class="mb-1">
+                    <label for="prestadorId" class="form-label">Prestador</label>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="prestadorId" placeholder="Adicione o prestador de serviço"
+                           aria-label="Recipient's username" aria-describedby="button-addon3" readonly="readonly">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon3" data-bs-toggle="modal" data-bs-target="#prestadorModal">Selecionar</button>
+                    <input type="text" class="form-control" id="nome" style="margin-left: 100px; background: #EEE" readonly="readonly">
+                </div>
+                <div class="mb-1">
+                    <label for="produtoId" class="form-label">Produto</label>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="produtoId" placeholder="Adicione o produto produzido"
+                           aria-label="Recipient's username" aria-describedby="button-addon4" readonly="readonly">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon4" data-bs-toggle="modal" data-bs-target="#produtoModal">Selecionar</button>
+                    <input type="text" class="form-control" id="descricao" style="margin-left: 100px; background: #EEE" readonly="readonly">
+                </div>
+                <div class="mb-1">
+                    <label class="form-label">Peças e Valores</label>
+                </div>
+                <div class="input-group mb-3">
+                    <label for="quantidade" class="form-label" style="margin-right: 5px">Quantidade</label>
+                    <input type="number" class="form-control" id="quantidade" placeholder="Quantidade de peças">
+                    <label for="valortotal" class="form-label" style="margin-right: 5px; margin-left: 200px">Valor Total</label>
+                    <input type="number" class="form-control" id="valortotal" placeholder="Valor a ser pago ao prestador">
+                </div>
+
+            </form>
+
+            <button type="button" class="btn btn-primary" id="btn-salvar-produto" onclick="salvarOrdemServico()">Salvar
+            </button>
+            <button type="button" class="btn btn-secondary"
+                    onclick="document.getElementById('formCadastroOrdemServico').reset();">Novo
+            </button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="processoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Pesquisa de Processos</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="processoBusca" class="col-form-label">Informe o processo:</label>
+                            <input type="text" class="form-control" id="processoBusca">
+                        </div>
+                        <button type="button" class="btn btn-success" onclick="pesquisarProcesso()">Buscar</button>
+                    </form>
+                    <div style="height: 300px; overflow: scroll;">
+                        <table class="table" id="tabelaProcessos">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Processo</th>
+                                <th scope="col">Selecionar</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="prestadorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel2">Pesquisa de Prestadores</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="nomeBusca" class="col-form-label">Informe o nome do prestador:</label>
+                            <input type="text" class="form-control" id="nomeBusca">
+                        </div>
+                        <button type="button" class="btn btn-success" onclick="pesquisarPrestador()">Buscar</button>
+                    </form>
+                    <div style="height: 300px; overflow: scroll;">
+                        <table class="table" id="tabelaPrestadores">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Selecionar</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="produtoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel3">Pesquisa de Produtos</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="descricaoBusca" class="col-form-label">Informe o produto:</label>
+                            <input type="text" class="form-control" id="descricaoBusca">
+                        </div>
+                        <button type="button" class="btn btn-success" onclick="pesquisarProduto()">Buscar</button>
+                    </form>
+                    <div style="height: 300px; overflow: scroll;">
+                        <table class="table" id="tabelaProdutos">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Descrição</th>
+                                <th scope="col">Cor</th>
+                                <th scope="col">Selecionar</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p style="text-align: center">Ordem de Serviço - Douglas Viegas</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+    function pesquisarProcesso() {
+        var processo = $('#processoBusca').val();
+
+        if (processo != null && processo.trim() != '') {
+            $.ajax({
+                method: "GET",
+                url: "../processo/buscar-processo",
+                data: "processo=" + processo,
+                success: function (response) {
+                    $('#tabelaProcessos > tbody > tr').remove();
+                    for (var i = 0; i < response.length; i++) {
+                        $('#tabelaProcessos > tbody').append('<tr id="'+response[i].processoId+'"><td>'+response[i].processoId+'</td><td>'+response[i].processo+'</td>' +
+                            '<td><button type="button" class="btn btn-primary" onclick="selecionarProcesso('+response[i].processoId+')">Selecionar</button></td>');
+                    }
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert("Erro ao buscar processo: " + xhr.responseText);
+            });
+        }
+    }
+
+    function selecionarProcesso(id) {
+        var processo = $('#processoBusca').val();
+
+        if (processo != null && processo.trim() != '') {
+            $.ajax({
+                method: "GET",
+                url: "../processo/buscar-processo-id",
+                data: "processoId=" + id,
+                success: function (response) {
+                    $("#processoId").val(response.processoId);
+                    $("#processo").val(response.processo);
+
+                    $('#processoModal').modal('hide');
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert("Erro ao buscar id do processo: " + xhr.responseText);
+            });
+        }
+    }
+
+    function pesquisarPrestador() {
+        var nome = $('#nomeBusca').val();
+
+        if (nome != null && nome.trim() != '') {
+            $.ajax({
+                method: "GET",
+                url: "../prestador/buscar-prestador",
+                data: "nome=" + nome,
+                success: function (response) {
+                    $('#tabelaPrestadores > tbody > tr').remove();
+                    for (var i = 0; i < response.length; i++) {
+                        $('#tabelaPrestadores > tbody').append('<tr id="'+response[i].prestadorId+'"><td>'+response[i].prestadorId+'</td><td>'+response[i].nome+'</td>' +
+                            '<td><button type="button" class="btn btn-primary" onclick="editarPrestador('+response[i].prestadorId+')">Selecionar</button></td>');
+                    }
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert("Erro ao buscar prestador: " + xhr.responseText);
+            });
+        }
+    }
+
+    function editarPrestador(id) {
+        var nome = $('#nomeBusca').val();
+
+        if (nome != null && nome.trim() != '') {
+            $.ajax({
+                method: "GET",
+                url: "../prestador/buscar-prestador-id",
+                data: "prestadorId=" + id,
+                success: function (response) {
+                    $("#prestadorId").val(response.prestadorId);
+                    $("#nome").val(response.nome);
+
+                    $('#prestadorModal').modal('hide');
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert("Erro ao buscar id do prestador: " + xhr.responseText);
+            });
+        }
+    }
+
+    function pesquisarProduto() {
+        var descricao = $('#descricaoBusca').val();
+
+        if (descricao != null && descricao.trim() != '') {
+            $.ajax({
+                method: "GET",
+                url: "../produto/buscar-produto",
+                data: "descricao=" + descricao,
+                success: function (response) {
+                    $('#tabelaProdutos > tbody > tr').remove();
+                    for (var i = 0; i < response.length; i++) {
+                        $('#tabelaProdutos > tbody').append('<tr id="'+response[i].produtoId+'"><td>'+response[i].produtoId+'</td><td>'+response[i].descricao+'</td><td>'+response[i].cor+'</td>'+
+                            '<td><button type="button" class="btn btn-primary" onclick="selecionarProduto('+response[i].produtoId+')">Selecionar</button></td>');
+                    }
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert("Erro ao buscar produto: " + xhr.responseText);
+            });
+        }
+    }
+
+    function selecionarProduto(id) {
+        var produto = $('#descricaoBusca').val();
+
+        if (produto != null && produto.trim() != '') {
+            $.ajax({
+                method: "GET",
+                url: "../produto/buscar-produto-id",
+                data: "produtoId=" + id,
+                success: function (response) {
+                    $("#produtoId").val(response.produtoId);
+                    $("#descricao").val(response.descricao);
+
+                    $('#produtoModal').modal('hide');
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert("Erro ao buscar id do produto: " + xhr.responseText);
+            });
+        }
+    }
+
+    function salvarOrdemServico() {
+        var idOrdem = $("#idOrdem").val();
+        const dataEmissao = Date.now();
+        var processoId = $("#processoId").val();
+        var prestadorId = $("#prestadorId").val();
+        var produtoId = $("#produtoId").val();
+        var quantidade = $("#quantidade").val();
+        var valortotal = $("#valortotal").val();
+        var situacao = $("#situacao").val();
+
+        $.ajax({
+            method: "POST",
+            url: "salvar-ordem-servico",
+            data: JSON.stringify({
+                idOrdem : idOrdem,
+                dataEmissao : dataEmissao,
+                processoModel : {
+                    processoId: processoId
+                },
+                prestadorModel : {
+                    prestadorId: prestadorId
+                },
+                produtoModel : {
+                    produtoId: produtoId
+                },
+                quantidade : quantidade,
+                valortotal : valortotal,
+                situacao : situacao
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                $("#idOrdem").val(response.idOrdem);
+                $("#situacao").val(response.situacao);
+                alert("Produto salvo com sucesso!");
+            }
+        }).fail(function (xhr, status, errorThrown) {
+            alert("Erro ao salvar produto: " + xhr.responseText);
+        });
+    }
+
+</script>
+
+</body>
+</html>

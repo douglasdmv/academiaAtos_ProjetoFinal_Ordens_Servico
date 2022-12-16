@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>Ordens de Serviço</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand bg-light fw-bold">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home">Sistema O.S.</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/home">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/produto/cadastro">Produto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/prestador/cadastro">Prestador</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/processo/cadastro">Processo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/tamanho/cadastro">Tamanho</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/logout">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="bg-body rounded-3" style="margin:100px">
+        <div class="container-fluid px-5">
+            <h1>Cadastrar Processos dos Produtos</h1>
+            <form action="" id="formCadastroProcesso">
+                <div class="mb-3">
+                    <label for="processoId" class="form-label">ID</label>
+                    <input type="text" class="form-control" id="processoId" readonly="readonly" style="background: #EEE">
+                </div>
+                <div class="mb-3">
+                    <label for="processo" class="form-label">Processo</label>
+                    <input type="text" class="form-control" id="processo"
+                           placeholder="Insira o processo que pode ser feito">
+                </div>
+            </form>
+
+            <button type="button" class="btn btn-primary" id="btn-salvar-tamanho" onclick="salvarProcesso()">Salvar</button>
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('formCadastroProcesso').reset();">Novo</button>
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#processoModal">Pesquisar</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="processoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Pesquisa de Processos</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="processoBusca" class="col-form-label">Informe o processo:</label>
+                            <input type="text" class="form-control" id="processoBusca">
+                        </div>
+                        <button type="button" class="btn btn-success" onclick="pesquisarProcesso()">Buscar</button>
+                    </form>
+                    <div style="height: 300px; overflow: scroll;">
+                        <table class="table" id="tabelaProcessos">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Processo</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Deletar</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p style="text-align: center">Ordem de Serviço - Douglas Viegas</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+    function salvarProcesso() {
+        var processoId = $("#processoId").val();
+        var processo = $("#processo").val();
+
+        if(processo == null || processo != null && processo.trim() == '') {
+            $("#processo").focus();
+            alert('Informe o processo!');
+            return;
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "salvar-processo",
+            data: JSON.stringify({processoId: processoId, processo: processo}),
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                $("#processoId").val(response.processoId);
+                alert("Processo salvo com sucesso!");
+            }
+        }).fail(function (xhr, status, errorThrown) {
+            alert("Erro ao salvar processo: " + xhr.responseText);
+        });
+    }
+
+    function pesquisarProcesso() {
+        var processo = $('#processoBusca').val();
+
+        if (processo != null && processo.trim() != '') {
+            $.ajax({
+                method: "GET",
+                url: "buscar-processo",
+                data: "processo=" + processo,
+                success: function (response) {
+                    $('#tabelaProcessos > tbody > tr').remove();
+                    for (var i = 0; i < response.length; i++) {
+                        $('#tabelaProcessos > tbody').append('<tr id="'+response[i].processoId+'"><td>'+response[i].processoId+'</td><td>'+response[i].processo+'</td>' +
+                            '<td><button type="button" class="btn btn-primary" onclick="editarProcesso('+response[i].processoId+')">Ver</button></td>' +
+                            '<td><button type="button" class="btn btn-danger" onclick="deletarProcesso('+response[i].processoId+')">Deletar</button></td></tr>');
+                    }
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert("Erro ao buscar processo: " + xhr.responseText);
+            });
+        }
+    }
+
+    function editarProcesso(id) {
+        var processo = $('#processoBusca').val();
+
+        if (processo != null && processo.trim() != '') {
+            $.ajax({
+                method: "GET",
+                url: "buscar-processo-id",
+                data: "processoId=" + id,
+                success: function (response) {
+                    $("#processoId").val(response.processoId);
+                    $("#processo").val(response.processo);
+
+                    $('#processoModal').modal('hide');
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert("Erro ao buscar id do processo: " + xhr.responseText);
+            });
+        }
+    }
+
+    function deletarProcesso(id) {
+        if(confirm('Deseja realmente deletar?')) {
+            $.ajax({
+                method: "DELETE",
+                url: "deletar-processo",
+                data: "processoId=" + id,
+                success: function (response) {
+                    $('#' + id).remove();
+                    alert(response);
+                }
+            }).fail(function (xhr, status, errorThrown) {
+                alert("Erro ao deletar processo: " + xhr.responseText);
+            });
+        }
+    }
+
+</script>
+</body>
+</html>
