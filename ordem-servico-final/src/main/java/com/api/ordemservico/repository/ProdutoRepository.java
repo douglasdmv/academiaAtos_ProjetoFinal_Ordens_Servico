@@ -1,6 +1,5 @@
 package com.api.ordemservico.repository;
 
-import com.api.ordemservico.model.TamanhoModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

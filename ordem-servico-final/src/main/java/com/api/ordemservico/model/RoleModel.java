@@ -6,9 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "role")
@@ -16,7 +14,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleModel implements GrantedAuthority, Serializable {
+public class RoleModel implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
 
